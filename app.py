@@ -311,8 +311,10 @@ elif st.session_state["step"] == 2:
 
     else:
         raw_df = st.session_state["raw_df"]
+        
 
         if st.button("Run / Re-run Data Health Scan", type="primary"):
+        
             with st.spinner("Scanning dataset quality..."):
                 before_profile, before_column_report, before_missing_intelligence = profile_dataset(raw_df)
 
@@ -446,7 +448,12 @@ elif st.session_state["step"] == 3:
     else:
         raw_df = st.session_state["raw_df"]
 
-        if st.button("Generate / Rebuild Cleaning Plan", type="primary"):
+        if "decisions" not in st.session_state:
+            run_plan = True
+        else:
+            run_plan = st.button("Rebuild Cleaning Plan", type="primary")
+
+        if run_plan:
             dataset_context = detect_dataset_context(raw_df)
 
             decisions = decide_cleaning_actions(
@@ -543,7 +550,12 @@ elif st.session_state["step"] == 4:
             set_step(3)
 
     else:
-        if st.button("Run / Re-run Cleaning Engine", type="primary"):
+        if "cleaned_df" not in st.session_state:
+            run_cleaning = True
+        else:
+            run_cleaning = st.button("Re-run Cleaning Engine", type="primary")
+
+        if run_cleaning:
             with st.spinner("Cleaning dataset safely..."):
                 cleaned_df, cleaning_summary = clean_dataset(
                     st.session_state["raw_df"],
@@ -624,7 +636,12 @@ elif st.session_state["step"] == 5:
     else:
         cleaned_df = st.session_state["cleaned_df"]
 
-        if st.button("Run / Re-run Final Validation", type="primary"):
+        if "validation_report" not in st.session_state:
+            run_validation = True
+        else:
+            run_validation = st.button("Re-run Final Validation", type="primary")
+
+        if run_validation:
             with st.spinner("Validating cleaned dataset..."):
                 after_profile, after_column_report, after_missing_intelligence = profile_dataset(cleaned_df)
 
