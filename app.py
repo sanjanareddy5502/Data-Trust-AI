@@ -313,9 +313,10 @@ elif st.session_state["step"] == 2:
         raw_df = st.session_state["raw_df"]
         
 
-        if st.button("Run / Re-run Data Health Scan", type="primary"):
-        
+                if "before_profile" not in st.session_state:
+
             with st.spinner("Scanning dataset quality..."):
+
                 before_profile, before_column_report, before_missing_intelligence = profile_dataset(raw_df)
 
                 st.session_state["before_profile"] = before_profile
@@ -347,6 +348,39 @@ elif st.session_state["step"] == 2:
 
             st.success("Data health scan completed.")
 
+        else:
+
+            if st.button("Re-run Data Health Scan", type="primary"):
+
+                with st.spinner("Scanning dataset quality..."):
+
+                    before_profile, before_column_report, before_missing_intelligence = profile_dataset(raw_df)
+
+                    st.session_state["before_profile"] = before_profile
+                    st.session_state["before_column_report"] = before_column_report
+                    st.session_state["before_missing_intelligence"] = before_missing_intelligence
+
+                    if SCHEMA_INTELLIGENCE_AVAILABLE:
+                        try:
+                            st.session_state["schema_report"] = infer_column_meanings(raw_df)
+                        except Exception as e:
+                            st.session_state["schema_error"] = str(e)
+
+                    if PATTERN_INTELLIGENCE_AVAILABLE:
+                        try:
+                            column_patterns, sparse_pairs = run_pattern_intelligence(raw_df)
+                            st.session_state["column_patterns"] = column_patterns
+                            st.session_state["sparse_pairs"] = sparse_pairs
+                        except Exception as e:
+                            st.session_state["pattern_error"] = str(e)
+
+                    if COLUMN_INTELLIGENCE_AVAILABLE:
+                        try:
+                            st.session_state["column_intelligence"] = build_column_intelligence(raw_df)
+                        except Exception as e:
+                            st.session_state["column_intelligence_error"] = str(e)
+
+                st.success("Data health scan re-run completed.")
         if "before_profile" in st.session_state:
             before_profile = st.session_state["before_profile"]
 
