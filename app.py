@@ -293,6 +293,13 @@ if st.session_state["step"] == 1:
 # STEP 2 — SCAN DATA HEALTH
 # ============================================================
 
+# Replace Your Entire STEP 2 Block With This
+
+```python
+# ============================================================
+# STEP 2 — SCAN DATA HEALTH
+# ============================================================
+
 elif st.session_state["step"] == 2:
     st.markdown(
         """
@@ -311,9 +318,9 @@ elif st.session_state["step"] == 2:
 
     else:
         raw_df = st.session_state["raw_df"]
-        
 
-                if "before_profile" not in st.session_state:
+        # AUTO RUN FIRST TIME
+        if "before_profile" not in st.session_state:
 
             with st.spinner("Scanning dataset quality..."):
 
@@ -348,6 +355,7 @@ elif st.session_state["step"] == 2:
 
             st.success("Data health scan completed.")
 
+        # SHOW RE-RUN BUTTON AFTER FIRST RUN
         else:
 
             if st.button("Re-run Data Health Scan", type="primary"):
@@ -381,6 +389,7 @@ elif st.session_state["step"] == 2:
                             st.session_state["column_intelligence_error"] = str(e)
 
                 st.success("Data health scan re-run completed.")
+
         if "before_profile" in st.session_state:
             before_profile = st.session_state["before_profile"]
 
