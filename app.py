@@ -293,13 +293,6 @@ if st.session_state["step"] == 1:
 # STEP 2 — SCAN DATA HEALTH
 # ============================================================
 
-# Replace Your Entire STEP 2 Block With This
-
-```python
-# ============================================================
-# STEP 2 — SCAN DATA HEALTH
-# ============================================================
-
 elif st.session_state["step"] == 2:
     st.markdown(
         """
